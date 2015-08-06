@@ -7,6 +7,11 @@
     <title>{{ wp_title }}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Cardo:700|Josefin+Sans' rel='stylesheet' type='text/css'>
+
+    <!-- Optional theme -->
+{#     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> #}
+    {{ 'main.css' | css_tag }}
 
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ assets }}img/favicon.png" />
@@ -43,6 +48,7 @@
 
     <!-- before load scripts and css -->
     {{ 'libs/modernizr.js' | js_tag }}
+    {{ 'lumberjack.js' | js_tag }}
     {{ 'screen.min.css' | css_tag }}
 
     <!-- wp_head -->
@@ -50,20 +56,42 @@
 </head>
 <body class="{{ body_class }}">
 
-<nav>
-    <ul class="main-nav">
-        {% for item in menu.get_items %}
-            <li class="nav-main-item {{item.classes | join(' ')}}"><a class="nav-main-link" href="{{item.get_link}}">{{item.title}}</a>
-                {% if item.get_children %}
-                    <ul class="nav-drop">
-                        {% for child in item.get_children %}
-                            <li class="nav-drop-item">
-                                <a href="{{child.get_link}}">{{child.title}}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-</nav>
+<header class="navigation" role="banner">
+  <div class="navigation-wrapper">
+{#     <a href="javascript:void(0)" class="logo">
+      <img src="logo">
+    </a> #}
+    <a href="javascript:void(0)" class="navigation-menu-button" id="js-mobile-menu">MENU</a>
+    <nav role="navigation">
+        <ul id="js-navigation-menu" class="navigation-menu show">
+            {% for item in menu.get_items %}
+                <li class="nav-link"><a href="{{item.get_link}}">{{item.title}}</a>
+                    {% if item.get_children %}
+                        <ul class="submenu">
+                            {% for child in item.get_children %}
+                                <li>
+                                    <a href="{{child.get_link}}">{{child.title}}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+    <div class="navigation-tools">
+      <div class="search-bar">
+        <form role="search" method="get" id="searchform" class="searchform" action="http://tombeerframes.co.uk/">
+
+          <input type="search" placeholder="Enter Search" value="" name="s" id="s"/>
+          <button type="submit">
+            <img src="{{ 'search-icon.png' | img_path }}">
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<div id="page-container">

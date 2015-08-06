@@ -16,16 +16,15 @@
  *
  */
 
-function sample_page_view($context) {
-	Timber::render('page/home.twig', $context);
+function project_page_view($context) {
+  $context['sidebar'] = get_dynamic_sidebar('sidebar-1');
+
+	Timber::render('page/projects.twig', $context);
 }
 
 function generic_view ($context) {
 	Timber::render('page/generic.twig', $context);
 }
-
-
-
 
 // DO NOT DO ANYTHING AFTER THIS!
 $view = str_replace('-', '_',$post->slug.'_view');

@@ -1,0 +1,19 @@
+{% extends 'layouts/base.twig' %}
+{% block content %}
+    <main class="projects">
+        <h1>Past Projects</h1>
+
+        <ul>
+        {% for post in posts %}
+            <li>
+                <b><a href="{{ post.permalink }}">{{ post.title }}</a></b>
+                <p>{{ post.get_content | excerpt(200) }}</p>
+                {# <div>{{ post | krumo }}</div> #}
+            </li>
+        {% endfor %}
+        </ul>
+    </main>
+    
+    {{ sidebar }}
+
+{% endblock %}

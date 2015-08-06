@@ -19,9 +19,6 @@ $view = 'index';
 // Make Global Context/Post changes here
 // Preferrably make these changes using filters in the function.php file
 
-
-
-
 // Load specific views
 if (is_single()) require_once 'views/single.php';
 if (is_page()) require_once 'views/page.php';
@@ -37,5 +34,8 @@ if (is_archive()) {
 		require_once 'views/archive.php';
 	}
 }
+if (is_search()) {
+    require_once 'views/search.php';
+}
 
-echo '<br/>Rendering '.$view.' took '.TimberHelper::stop_timer($timberTimer);
+// echo '<br/>Rendering '.$view.' took '.TimberHelper::stop_timer($timberTimer);

@@ -1,0 +1,9 @@
+{% extends 'layouts/base.twig' %}
+{% block content %}
+    <main class="projects">
+        <h1>{{ post.title }}</h1>
+        {{ post.content }}
+        {{ post | krumo }}
+    </main>
+    {{ sidebar }}
+{% endblock %}

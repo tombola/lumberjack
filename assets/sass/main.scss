@@ -1,0 +1,50 @@
+@import "bourbon/bourbon";
+// @import "grid-settings";
+@import "neat/neat";
+@import "base/base";
+
+@import "variables";
+@import "typography";
+@import "navbar";
+
+// $sidebar-desk-cols: 3;
+// $content-desk-cols: 9;
+
+// body { @include outer-container; }
+// aside { 
+//     @include span-columns($sidebar-desk-cols); 
+//     @include shift(-11);
+// }
+// main { 
+//     @include span-columns($content-desk-cols);
+//     @include shift($sidebar-desk-cols);
+//     @include omega(); 
+// }
+// footer { @include span-columns(12); }
+
+body {
+    background-color: $light-background;
+}
+
+#page-container {
+  @include outer-container;
+  padding-top: 30px;
+  main {
+    h1:first-child {
+      margin-top: 0;
+    }
+  }
+  main.projects {
+    @include span-columns(9);
+    @include shift(3);
+  }
+  aside {
+    @include span-columns(3);
+    @include shift(-12);
+    .sidebar-menu {
+      margin-bottom: 30px;
+    }
+    @include omega();
+  }
+}
+

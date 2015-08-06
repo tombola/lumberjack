@@ -1,5 +1,10 @@
 {% extends 'layouts/base.twig' %}
 {% block content %}
-    {{ post.title }}
-    <p>This is a generic page template</p>
+    <main>
+        <article>
+            <h1>{{ post.title }}</h1>
+            {{ post.get_content | wpautop }}
+            <div>{{ post | krumo }}</div>
+        </article>
+    </main>
 {% endblock %}

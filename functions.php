@@ -17,8 +17,10 @@ Contents:
 *   Set up global variables for the site url and the assets folder url to reduce calls
 */
 
+require_once 'vendor/autoload.php'; 
+
 $GLOBALS['home'] = home_url() . '/';
-$GLOBALS['assets'] = '/assets/';
+$GLOBALS['assets'] = get_template_directory_uri() .'/assets/';
 $GLOBALS['current_user'] = wp_get_current_user();
 
 // Set up Timber
@@ -44,12 +46,13 @@ function add_to_context( $data ) {
     $user = new TimberUser();
 
     $data['home'] = home_url() . '/';
-    $data['assets'] = '/assets/';
+    $data['assets'] = $GLOBALS['assets'];
     $data['wp_title'] = TimberHelper::function_wrapper( 'wp_title', array( '|', true, 'right' ) );
     $data['menu'] = new TimberMenu();
     $data['user'] = (!empty($user->id)) ? $user : false;
     $data['profile_url'] = TimberHelper::function_wrapper('get_edit_user_link', $user->id);
     $data['logout_url'] = TimberHelper::function_wrapper('wp_logout_url', $_SERVER['REQUEST_URI']);
+    $data['search'] =  TimberHelper::function_wrapper('get_search_form');
 
     return $data;
 }
@@ -58,8 +61,15 @@ function add_to_twig($twig) {
     // this is where you can add your own fuctions to twig
     $twig->addFilter('js_tag', new Twig_Filter_Function('js_tag'));
     $twig->addFilter('css_tag', new Twig_Filter_Function('css_tag'));
+    $twig->addFilter('img_path', new Twig_Filter_Function('img_path'));
     $twig->addFilter('pre', new Twig_Filter_Function('pre_tag'));
+    $twig->addFilter('krumo', new Twig_Filter_Function('k_dump'));
     return $twig;
+}
+
+function k_dump($text) {
+    $str = k($text); // krumo
+    return $str;
 }
 
 function js_tag($text) {
@@ -71,6 +81,12 @@ function css_tag($text) {
     $str = '<link rel="stylesheet" href="'.$GLOBALS['assets'].'css/'.$text.'" type="text/css" media="all">';
     return $str;
 }
+
+function img_path($text) {
+    $str = $GLOBALS['assets'].'image/'.$text;
+    return $str;
+}
+
 
 function pre_tag($text) {
     $str = '<pre>'.$text.'</pre>';
@@ -278,4 +294,27 @@ function get_top_level_term ($term, $taxonomy) {
     if ($term->parent == 0) return $term;
     $parent = get_term($term->parent, $taxonomy);
     return get_top_level_term($parent, $taxonomy);
+}
+
+function get_dynamic_sidebar($id = 'sidebar-1') {
+    ob_start();
+    dynamic_sidebar( $id );
+    return ob_get_clean();
+}
+
+function get_taxonomy_list( $taxonomy_name = 'category') {
+    $list = '';
+    $args = array(
+        'orderby'    => 'count',
+        'hide_empty' => 0
+        );
+    if ($terms = get_terms( $taxonomy_name, $args)) {
+        foreach($terms as $term) {
+        $list[] = '<li><a href="'. get_term_link($term) .'">'. $term->name .'</a></li>';
+        }
+        // $title = "<h2>$taxonomy_name</h2>";
+        $title = '';
+        return "<div class=\"sidebar-menu sidebar-$taxonomy_name\">$title<ul>". implode($list, "</li>\n<li>") ."</li></ul></div";
+    }
+    return '';
 }

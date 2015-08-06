@@ -6,7 +6,7 @@
     {% for post in posts %}
         <li>
             <b><a href="{{ post.permalink }}">{{ post.title }}</a></b>
-            <p>{{ post.get_content | excerpt(5) }}</p>
+            <p>{{ post.get_content | excerpt(200) }}</p>
         </li>
     {% endfor %}
     </ul>

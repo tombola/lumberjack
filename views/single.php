@@ -21,11 +21,15 @@ function post_view ($context) {
 	Timber::render('single/post.twig', $context);
 }
 
-function generic_view ($context) {
-	Timber::render('single/generic.twig', $context);
+function project_view ($context) {
+    $context['sidebar'] = Timber::get_sidebar('sidebar.php', $context);
+    Timber::render('single/project.twig', $context);
 }
 
-
+function generic_view ($context) {
+  $context['sidebar_widgets'] = Timber::get_widgets('sidebar-1');
+	Timber::render('single/generic.twig', $context);
+}
 
 
 
